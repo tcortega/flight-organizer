@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import { Flight } from "@/types/flight";
 import { Result } from "@/types/result";
 import { ShareableWorkspace, Workspace } from "@/types/workspace";
+import { decodeURLSafe, encodeURLSafe } from "@/lib/utils";
 
 interface WorkspaceStore {
   workspaces: Workspace[];
@@ -101,7 +102,7 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
 
       importWorkspace: (workspaceData) => {
         try {
-          const decoded = atob(workspaceData);
+          const decoded = decodeURLSafe(workspaceData);
           const parsed = JSON.parse(decoded) as ShareableWorkspace;
 
           // Validate version and structure
@@ -149,7 +150,7 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
             version: 1,
           };
 
-          const encoded = btoa(JSON.stringify(shareableData));
+          const encoded = encodeURLSafe(JSON.stringify(shareableData));
           return { success: true, data: encoded };
         } catch (error) {
           return {
