@@ -7,4 +7,6 @@ export interface Flight {
   miles: number;
   price: string;
   ticketLink: string;
+  useDirectPrice: boolean;
+  taxes?: string;
 }
